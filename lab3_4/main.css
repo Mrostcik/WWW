@@ -3,30 +3,30 @@ body{
     text-align:center;
 }
 
-body.sub{
+.sub{
     background-image:url("https://images.wallpaperscraft.com/image/plane_sky_flight_138082_1920x1080.jpg");
     background-repeat:no-repeat;
     background-size: cover;    
 }
 
-body.main{
+.main{
     background-image:url("https://wallpaperaccess.com/full/533165.jpg");
     background-repeat:no-repeat;
     background-size: cover;     
 }
 
-div.tabelka{
+.tabelka{
     display:table;
     margin-left:auto;
     margin-right:auto;
 }
 
-div.prawa{
+.prawa{
     margin-left:20%;
     display:inline-block;
 }
 
-div.lewa{
+.lewa{
     display:inline-block;
 }
 
@@ -49,15 +49,18 @@ table, td, th{
     color:green;
 }
 
-img.city{
+.city{
     width:300px;
 }
 
-img.icon{
+.icon{
+    margin-left:5px;
     width:60px;
+    vertical-align:middle;
 }
 
-p.temperatura{
+.temperatura{
+    vertical-align:middle;
     display:inline;
     text-align:right;
 }
@@ -65,14 +68,13 @@ p.temperatura{
 #samolotimg{
     width:300px;
     margin-left:0.5%;
-    vertical-align:middle;
 }
 
 li{
     text-align:left;
 }
 
-div.pasazerowie{
+.pasazerowie{
     display:table;
     margin:0 auto;
 }
