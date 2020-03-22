@@ -10,13 +10,13 @@ body{
 }
 
 .main{
-    background-image:url("https://wallpaperaccess.com/full/533165.jpg");
+    background-image:url("https://images.wallpaperscraft.com/image/plane_sky_flight_138082_1920x1080.jpg");
     background-repeat:no-repeat;
     background-size: cover;     
 }
 
 .tabelka{
-    display:table;
+    display:table inline;
     margin-left:auto;
     margin-right:auto;
 }
@@ -77,4 +77,32 @@ li{
 .pasazerowie{
     display:table;
     margin:0 auto;
+}
+
+nav{
+    position:absolute;
+    left:20px;
+    top:20px;
+}
+
+.menu{
+    list-style:none;
+    font-family:Helvetica;
+    color: black;
+    text-transform:uppercase;
+    font-size:16px;
+}
+
+:visited{
+    color:rgb(6, 6, 179);
+}
+
+a{
+    text-decoration:none;
+}
+
+.odwolane{
+    position:absolute;
+    right:100px;
+    top:20px;
 }
