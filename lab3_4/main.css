@@ -1,171 +1,175 @@
-
-body{
-    text-align:center;
+@media only screen and (max-width:760px) {
+    #navmenu, #rezerwacja, .tabelka, .odwolane, .lewa, .prawa, .pasazerowie, .samolot {
+        display: block;
+        width: 100%;
+        float: left;
+    }
+    img, .temperatura {
+        display: none;
+    }
 }
 
-.sub{
-    background-image:url("https://images.wallpaperscraft.com/image/plane_sky_flight_138082_1920x1080.jpg");
-    background-repeat:no-repeat;
-    background-size: cover;    
+@media only screen and (min-width:761px) and (max-width:1399px) {
+    .tabelka, #navmenu, .odwolane, #rezerwacja {
+        display: inline-table;
+    }
+    .tabelka, #rezerwacja {
+        margin-left: 40px;
+    }
+    img, .temperatura {
+        display: none;
+    }
 }
 
-.main{
-    background-image:url("https://images.wallpaperscraft.com/image/plane_sky_flight_138082_1920x1080.jpg");
-    background-repeat:no-repeat;
-    background-size: cover;     
+body {
+    text-align: center;
 }
 
-h1{
-    font-size:1.5em;
+.sub {
+    background-image: url("https://images.wallpaperscraft.com/image/plane_sky_flight_138082_1920x1080.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.tabelka{
-    flex-basis:33.3333%;
+.main {
+    background-image: url("https://images.wallpaperscraft.com/image/plane_sky_flight_138082_1920x1080.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
-.tabelka table{
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.prawa{
-    margin-left:20%;
-    display:inline-block;
-}
-
-.lewa{
-    display:inline-block;
+h1 {
+    font-size: 1.5em;
 }
 
 footer {
-    color: black;  
+    color: black;
     font-family: sans-serif;
-    font-size: 20px; 
-    text-align:right;
+    font-size: 20px;
+    text-align: right;
 }
 
-table, td, th{
-    font-weight:500;
+table, td, th {
+    font-weight: 500;
     border: 2px solid black;
-    text-align:left;
+    text-align: left;
     padding: 2px;
 }
 
-th{
-    font-weight:bold;
-    font-style:italic;
+th {
+    font-weight: bold;
+    font-style: italic;
 }
 
-#pierwszy, #drugi{
-    color:green;
+#pierwszy, #drugi {
+    color: green;
 }
 
-.city{
-    width:300px;
+li {
+    text-align: left;
 }
 
-.icon{
-    margin-left:5px;
-    width:60px;
-    vertical-align:middle;
+:visited {
+    color: rgb(6, 6, 179);
 }
 
-.temperatura{
-    vertical-align:middle;
-    display:inline;
-    text-align:right;
+a {
+    text-decoration: none;
 }
 
-#samolotimg{
-    width:300px;
-    margin-left:0.5%;
+.duze_op {
+    border-color: rgb(206, 137, 10);
 }
 
-li{
-    text-align:left;
+.male_op {
+    border-color: rgb(206, 206, 22);
 }
 
-.pasazerowie{
-    display:table;
-    margin:0 auto;
+.odwolany {
+    border-color: rgb(189, 8, 8);
 }
 
-#navmenu{
-    flex-basis:33.3333%;
+.op {
+    font-weight: bold;
 }
 
-
-.menu{
-    list-style:none;
-    font-family:Helvetica;
-    color: black;
-    text-transform:uppercase;
-    font-size:16px;
-    display:table;
-    margin-left:auto;
-    margin-right:auto;
+#rezerwacja p {
+    font-weight: bold;
+    font-size: 18px;
 }
 
-:visited{
-    color:rgb(6, 6, 179);
+.przycisk {
+    width: 100px;
+    height: 30px;
 }
 
-a{
-    text-decoration:none;
-}
-
-.odwolane{
-    flex-basis:33.3333%;
-}
-
-.odwolane table{
-    margin-left:auto;
-    margin-right:auto;
-}
-
-.duze_op{
-    border-color:rgb(206, 137, 10);
-}
-
-.male_op{
-    border-color:rgb(206, 206, 22);
-}
-
-.odwolany{
-    border-color:rgb(189, 8, 8);
-}
-
-.op{
-    font-weight:bold;
-}
-
-.kontener{
-    display:flex;
-    flex-direction:row;
-    flex-wrap:wrap;
-    justify-content:space-between;
-    align-items:flex-start;
-}
-
-#rezerwacja{
-    flex-basis:33.3333%;
-    margin-left:auto;
-}
-
-#rezerwacja label{
-    font-size:16px;
-}
-
-#rezerwacja input,select{
-}
-
-
-#rezerwacja p{
-    font-weight:bold;
-    font-size:18px;
-}
-
-.przycisk{
-    width:100px;
-    height:30px;
+@media only screen and (min-width:1400px) {
+    .tabelka {
+        flex-basis: 33.3333%;
+    }
+    .tabelka table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .prawa {
+        margin-left: 20%;
+        display: inline-block;
+    }
+    .lewa {
+        display: inline-block;
+    }
+    .city {
+        width: 300px;
+    }
+    .icon {
+        margin-left: 5px;
+        width: 60px;
+        vertical-align: middle;
+    }
+    .temperatura {
+        vertical-align: middle;
+        display: inline;
+        text-align: right;
+    }
+    #samolotimg {
+        width: 300px;
+        margin-left: 0.5%;
+    }
+    .pasazerowie {
+        display: table;
+        margin: 0 auto;
+    }
+    #navmenu {
+        flex-basis: 33.3333%;
+    }
+    .menu {
+        list-style: none;
+        font-family: Helvetica;
+        color: black;
+        text-transform: uppercase;
+        font-size: 16px;
+        display: table;
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .odwolane {
+        flex-basis: 33.3333%;
+    }
+    .odwolane table {
+        margin-left: auto;
+        margin-right: auto;
+    }
+    .kontener {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: flex-start;
+    }
+    #rezerwacja {
+        flex-basis: 33.3333%;
+        margin-left: auto;
+    }
+    #rezerwacja label {
+        font-size: 16px;
+    }
 }
