@@ -138,6 +138,11 @@ a {
         display: table;
         margin: 0 auto;
     }
+
+    .pasazerowie li:nth-child(2n){
+        background-color:gold;
+    }
+
     #navmenu {
         flex-basis: 33.3333%;
     }
@@ -171,5 +176,14 @@ a {
     }
     #rezerwacja label {
         font-size: 16px;
+    }
+    
+    .siedzenie{
+        display:none;
+    }
+    
+    .pasazerowie li:hover .siedzenie{
+        display: inline-block;
+        margin-left:20px;
     }
 }
