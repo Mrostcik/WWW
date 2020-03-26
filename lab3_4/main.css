@@ -15,8 +15,15 @@ body{
     background-size: cover;     
 }
 
+h1{
+    font-size:1.5em;
+}
+
 .tabelka{
-    display:table inline;
+    flex-basis:33.3333%;
+}
+
+.tabelka table{
     margin-left:auto;
     margin-right:auto;
 }
@@ -44,6 +51,10 @@ table, td, th{
     padding: 2px;
 }
 
+th{
+    font-weight:bold;
+    font-style:italic;
+}
 
 #pierwszy, #drugi{
     color:green;
@@ -79,11 +90,10 @@ li{
     margin:0 auto;
 }
 
-nav{
-    position:absolute;
-    left:20px;
-    top:20px;
+#navmenu{
+    flex-basis:33.3333%;
 }
+
 
 .menu{
     list-style:none;
@@ -91,6 +101,9 @@ nav{
     color: black;
     text-transform:uppercase;
     font-size:16px;
+    display:table;
+    margin-left:auto;
+    margin-right:auto;
 }
 
 :visited{
@@ -102,7 +115,57 @@ a{
 }
 
 .odwolane{
-    position:absolute;
-    right:100px;
-    top:20px;
+    flex-basis:33.3333%;
+}
+
+.odwolane table{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+.duze_op{
+    border-color:rgb(206, 137, 10);
+}
+
+.male_op{
+    border-color:rgb(206, 206, 22);
+}
+
+.odwolany{
+    border-color:rgb(189, 8, 8);
+}
+
+.op{
+    font-weight:bold;
+}
+
+.kontener{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+    justify-content:space-between;
+    align-items:flex-start;
+}
+
+#rezerwacja{
+    flex-basis:33.3333%;
+    margin-left:auto;
+}
+
+#rezerwacja label{
+    font-size:16px;
+}
+
+#rezerwacja input,select{
+}
+
+
+#rezerwacja p{
+    font-weight:bold;
+    font-size:18px;
+}
+
+.przycisk{
+    width:100px;
+    height:30px;
 }
