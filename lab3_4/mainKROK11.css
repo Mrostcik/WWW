@@ -30,7 +30,7 @@
         margin-left:auto;
         margin-right:auto;
     }
-
+    
     img, .temperatura {
         display: none;
     }
@@ -100,6 +100,9 @@ h1 {
 }
 
 footer {
+    position:absolute;
+    bottom:0px;
+    right:0px;
     color: black;
     font-family: sans-serif;
     font-size: 20px;
@@ -160,22 +163,21 @@ a {
     height: 30px;
 }
 
-
 #potwierdzenie{
     position:fixed;
     top:0;
     left:0;
     width:100%;
-    height:500px;
+    height:100%;
+    opacity:0.8;
     background:rgb(76, 131, 179);
-    color:solid black;
+    color:red;
     border:1px;
 }
-
 @media only screen and (min-width:1400px) {
     .kontener {
         display: grid;
-        grid-template-columns:33.3333% 33.3333% 33.3333%;
+        grid-template-columns:200px calc(66.6666% - 133.33px) calc(33.3333% - 66.666px);
         grid-template-rows:50% auto;
         grid-row-gap:15px;
     }
@@ -252,7 +254,6 @@ a {
         grid-column:3 / 3;
         justify-content:center;
     }
-
     #rezerwacja label {
         font-size: 16px;
     }
@@ -260,9 +261,10 @@ a {
     .siedzenie{
         display:none;
     }
-    
+
     .pasazerowie li:hover .siedzenie{
+        position:absolute;
         display: inline-block;
-        margin-left:20px;
+        left:1070px;
     }
 }

@@ -133,9 +133,6 @@
                     <td>9:10</td>
                 </tr>
             </table>
-            <footer>
-                Szymon Borowy
-            </footer>
         </section>
         <section class="odwolane">
             <h2>Opóźnienia</h2>
@@ -218,6 +215,10 @@
             <input type="text" id="imie" name="Imię"><br>
             <label for="nazwisko">Nazwisko:</label><br>
             <input type="text" id="nazwisko" name="Nazwisko"><br>
+            <label for="data_wylotu">Data wylotu:</label><br>
+            <input type="date" id="data_wylotu" name="Wylot"><br>
+            <label for="data_powrotu">Data powrotu:</label><br>
+            <input type="date" id="data_powrotu" name="Powrót"><br>
             <label for="skad_miasta">Skąd:</label><br>
             <select name="miasta" id="skad_miasta">
                 <option value="">Wybierz miasto</option>
@@ -266,7 +267,7 @@
                 <option value="madryt">Madryt</option>
                 <option value="sztokholm">Sztokholm</option>
             </select><br>
-            <button class="przycisk" type="submit" >
+            <button class="przycisk" type="submit">
                 Rezerwuj
             </button>
             <div id="potwierdzenie">Rezerwacja udana!</div>
@@ -275,6 +276,9 @@
             </button>
         </form>
     </section>
+    <footer>
+        Szymon Borowy
+    </footer>
 </body>
 
 </html>
