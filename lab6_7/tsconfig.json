@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+        "lib":[
+            "ES2016",
+            "DOM"
+        ]
+    },
+    "include": [
+        "opis.ts",
+        "main.ts",
+        "krok7.ts",
+        "submit.ts",
+    ]
+}

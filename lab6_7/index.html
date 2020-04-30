@@ -6,8 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <title>Loty</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" type="text/css" media="screen" href="mainKROK11.css">
-    <script src="main.js"></script>
+    <link rel="stylesheet" type="text/css" media="screen" href="main.css">
 </head>
 
 <body class="main">
@@ -209,18 +208,18 @@
                 </tr>
             </table>
         </section>
-        <form id="rezerwacja">
+        <form id="rezerwacja" data-fib=0 onreset="checkEvent()">
             <p>Rezerwacja lotu:</p>
             <label for="imie">Imię:</label><br>
-            <input type="text" id="imie" name="Imię"><br>
+            <input type="text" id="imie" name="Imię" autocomplete="off"><br>
             <label for="nazwisko">Nazwisko:</label><br>
-            <input type="text" id="nazwisko" name="Nazwisko"><br>
+            <input type="text" id="nazwisko" name="Nazwisko" autocomplete="off"><br>
             <label for="data_wylotu">Data wylotu:</label><br>
-            <input type="date" id="data_wylotu" name="Wylot"><br>
+            <input type="date" id="data_wylotu" name="Wylot" autocomplete="off"><br>
             <label for="data_powrotu">Data powrotu:</label><br>
-            <input type="date" id="data_powrotu" name="Powrót"><br>
+            <input type="date" id="data_powrotu" name="Powrót" autocomplete="off"><br>
             <label for="skad_miasta">Skąd:</label><br>
-            <select name="miasta" id="skad_miasta">
+            <select name="miasta" id="skad_miasta" autocomplete="off">
                 <option value="">Wybierz miasto</option>
                 <option value="warszawa">Warszawa</option>
                 <option value="krakow">Kraków</option>
@@ -244,7 +243,7 @@
                 <option value="sztokholm">Sztokholm</option>
             </select><br>
             <label for="dokad_miasta">Dokąd:</label><br>
-            <select name="miasta" id="dokad_miasta">
+            <select name="miasta" id="dokad_miasta" autocomplete="off">
                 <option value="">Wybierz miasto</option>
                 <option value="warszawa">Warszawa</option>
                 <option value="krakow">Kraków</option>
@@ -267,18 +266,19 @@
                 <option value="madryt">Madryt</option>
                 <option value="sztokholm">Sztokholm</option>
             </select><br>
-            <button class="przycisk" type="submit">
-                Rezerwuj
-            </button>
+            <input class="przycisk" type="submit" value="Rezerwuj" disabled>
+            </input>
             <div id="potwierdzenie">Rezerwacja udana!</div>
-            <button class="przycisk" type="reset">
-                Resetuj
-            </button>
+            <input class="przycisk" type="reset" value="Resetuj">
+            </input>
         </form>
     </section>
     <footer>
         Szymon Borowy
     </footer>
+    <script src="main.js"></script>
+    <script src="krok7.js"></script>
+    <script src="submit.js"></script>
 </body>
 
 </html>

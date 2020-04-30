@@ -99,16 +99,6 @@ h1 {
     font-size: 1.5em;
 }
 
-footer {
-    position:absolute;
-    bottom:0px;
-    right:0px;
-    color: black;
-    font-family: sans-serif;
-    font-size: 20px;
-    text-align: right;
-}
-
 table, td, th {
     font-weight: 500;
     border: 2px solid black;
@@ -174,6 +164,7 @@ a {
     color:red;
     border:1px;
 }
+
 @media only screen and (min-width:1400px) {
     .kontener {
         display: grid;
@@ -183,7 +174,7 @@ a {
     }
 
     .tabelka {
-        grid-row:1 / 1;
+        grid-row:1 / 2;
         grid-column: 2 / 2;
         justify-content:center;
     }
