@@ -1,10 +1,8 @@
-let rezerwuj = document.querySelector("input[type=submit]") as HTMLButtonElement;
-let potwierdzenie = document.querySelector("#potwierdzenie") as HTMLElement;
+const rezerwuj = document.querySelector("input[type=button]") as HTMLButtonElement;
+const potwierdzenie = document.querySelector("#potwierdzenie") as HTMLElement;
 potwierdzenie.style.display = "none";
 
-formularz.addEventListener("click", checkEvent);
-formularz.addEventListener("keyup", checkEvent);
-formularz.addEventListener("change", checkEvent);
+formularz.addEventListener("input", checkEvent);
 
 const imie = document.querySelector("input[id=imie]") as HTMLInputElement;
 const nazwisko = document.querySelector("input[id=nazwisko]") as HTMLInputElement;
@@ -17,19 +15,9 @@ function checkForm(){
     if(imie.value === "" || nazwisko.value === "")
         return false;
 
-    const today = new Date();
-    let currentDate = "";
-    currentDate +=  today.getFullYear();
-    currentDate += "-";
-    let month = today.getMonth();
-    month++;
-    if(month < 10)
-        currentDate += "0";
-    currentDate += month;
-    currentDate += "-";
-    currentDate += today.getDate();
+    const currentDate = makeDate();
     if(dataWylotu.value === "" || dataPowrotu.value === "" || dataWylotu.value > dataPowrotu.value || 
-        dataWylotu.value < currentDate || dataPowrotu.value < currentDate)
+        dataWylotu.value < currentDate)
         return false;
 
     if(skad.value === "" || dokad.value === "" || skad.value === dokad.value)
@@ -38,8 +26,27 @@ function checkForm(){
     return true;
 }
 
-async function checkEvent(){
-    await wait(0);
+function makeDate(){
+    const today = new Date();
+    let currentDate = "";
+    currentDate +=  today.getFullYear();
+    currentDate += "-";
+    let month = today.getMonth();
+    const day = today.getDate();
+    month++;
+    if(month < 10)
+        currentDate += "0";
+    currentDate += month;
+    currentDate += "-";
+    if(day < 10)
+        currentDate += "0";
+    currentDate += day;
+
+    return currentDate;
+}
+
+
+function checkEvent(){
     rezerwuj.disabled = !checkForm();
 }
 
@@ -47,10 +54,12 @@ rezerwuj.addEventListener("click", submitEvent);
 
 function submitEvent(){
     let potwText = "";
-    potwText += "Rezerwacja udana!\nImię: " + imie.value + "\nNazwisko: " + nazwisko.value + "\nSkąd: "
-                + skad.value + "\nDokąd: " + dokad.value + "\nData wylotu: " + dataWylotu.value + 
-                "\nData powrotu: " + dataPowrotu.value;
-    alert(potwText);
+    potwText += "Rezerwacja udana!<br>Imię: " + imie.value + "<br>Nazwisko: " + nazwisko.value + "<br>Skąd: "
+                + skad.value + "<br>Dokąd: " + dokad.value + "<br>Data wylotu: " + dataWylotu.value + 
+                "<br>Data powrotu: " + dataPowrotu.value;
+    const info = document.getElementById("potwierdzenie") as HTMLDivElement;
+    info.innerHTML = potwText;
+    info.style.display = "initial";
 }
 
 checkEvent();

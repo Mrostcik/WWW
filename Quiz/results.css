@@ -1,0 +1,59 @@
+@media only screen and (max-width:599px) {
+    th{
+        display:none;
+    }
+
+    td{
+        display:block;
+        height: auto;
+        border: none;
+    }
+
+    tr{
+        display:block;
+        margin-bottom: 10px;
+    }
+
+    td:nth-of-type(1):before { content: "Miejsce "; }
+    td:nth-of-type(2):before { content: "Czas rozwiązywania "; }
+    td:nth-of-type(3):before { content: "Kara otrzymana za złe odp. "; }
+    td:nth-of-type(4):before { content: "Sumaryczny wynik "; }
+}
+
+h1{
+    text-align:center;
+}
+
+#topTable{
+    margin-left:auto;
+    margin-right:auto;
+}
+
+td{
+    color: rgb(55, 15, 146);
+}
+
+body{
+    background-color:rgb(34, 157, 214);
+    color: black;
+    font-weight: bold;
+}
+
+input[type=button]{
+    display: block;
+    margin: 20px auto;
+    width: 300px;
+    height: 70px;
+    background-color:purple;
+    color: white;
+    font-size:18px;
+    border: 2px solid black;
+}
+
+@media only screen and (min-width:600px){
+    #topTable, td, th{
+        border: 2px solid black;
+        text-align: left;
+        padding: 2px;
+    }
+}

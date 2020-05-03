@@ -154,6 +154,7 @@ a {
 }
 
 #potwierdzenie{
+    display: block;
     position:fixed;
     top:0;
     left:0;
@@ -161,7 +162,7 @@ a {
     height:100%;
     opacity:0.8;
     background:rgb(76, 131, 179);
-    color:red;
+    color:black;
     border:1px;
 }
 
