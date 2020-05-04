@@ -32,7 +32,7 @@ async function lackingArgument(n: number){
                 await driver.find(selektory[i]).sendKeys(dane[i]);
             }
         }
-        return await driver.find("input[type=button]").isEnabled();
+        return driver.find("input[type=button]").isEnabled();
 }
  
 describe("LackOfArgument", function(){
