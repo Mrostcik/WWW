@@ -38,34 +38,41 @@ async function lackingArgument(n: number){
 describe("LackOfArgument", function(){
      it("First name not set", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(0).then((value) => {return value}, ()=> {return true})).to.equal(false);
+        const val = await(lackingArgument(0));
+        expect(val).to.equal(false);
      });
      it("Last name not set", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(1).then((value) => {return value}, ()=> {return true})).to.equal(false);
+        const val = await(lackingArgument(1));
+        expect(val).to.equal(false);
      });
      it("Date of departure not set", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(2).then((value) => {return value}, ()=> {return true})).to.equal(false);
+        const val = await(lackingArgument(2));
+        expect(val).to.equal(false);
      });
      it("Date of arrival not set", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(3).then((value) => {return value}, ()=> {return true})).to.equal(false);
+        const val = await(lackingArgument(3));
+        expect(val).to.equal(false);
      });
      it("City of departure not set", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(4).then((value) => {return value}, ()=> {return true})).to.equal(false);
+        const val = await(lackingArgument(4));
+        expect(val).to.equal(false);
      });
      it("Desination not set", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(5).then((value) => {return value}, ()=> {return true})).to.equal(false);
+        const val = await(lackingArgument(5));
+        expect(val).to.equal(false);
      });
 })
 
 describe("AllArgumentsFine", function(){
     it("All set. Submit button active", async function(){ 
         this.timeout(20000);
-        expect(await lackingArgument(6).then((value) => {return value}, ()=> {return false})).to.equal(true);
+        const val = await(lackingArgument(6));
+        expect(val).to.equal(true);
      });
 })
 
