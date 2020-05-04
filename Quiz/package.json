@@ -1,0 +1,12 @@
+{
+  "name": "quiz",
+  "version": "1.0.0",
+  "description": "",
+  "main": "mainButtonFunctionalities.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "tsc --target es2016 quizJSON.ts mainButtonFunctionalities.ts quizFunctionalities.ts resultsFunctionalities.ts"
+  },
+  "author": "",
+  "license": "ISC"
+}

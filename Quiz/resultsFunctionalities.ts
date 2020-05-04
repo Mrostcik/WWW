@@ -12,20 +12,24 @@ type res = {
 let resultArray: Array<res> = [];
 
 function computeTopResults(){
+    let numberOfResults = 0;
     for(let i = 0; i < howMany; i++){
-        const penalty = parseInt(localStorage.getItem(i.toString() + "penalty"));
-        const points = parseInt(localStorage.getItem(i.toString() + "result"));
-        let tempResult: res = {
-            time: points - penalty,
-            penalty:  penalty,
-            total: points
+        if(localStorage.getItem(i.toString() + "done") != null){
+            const penalty = parseInt(localStorage.getItem(i.toString() + "penalty"));
+            const points = parseInt(localStorage.getItem(i.toString() + "result"));
+            let tempResult: res = {
+                time: points - penalty,
+                penalty:  penalty,
+                total: points
+            }
+            resultArray.push(tempResult);
+            numberOfResults++;
         }
-        resultArray.push(tempResult);
     }
 
     resultArray.sort(compareFunction);
 
-    for(let i = 0; i < Math.min(5, howMany); i++){
+    for(let i = 0; i < Math.min(5, numberOfResults); i++){
         let row = table.insertRow(i+1);
         let cell1 = row.insertCell(0);
         let cell2 = row.insertCell(1);
@@ -54,5 +58,5 @@ const backButton = document.getElementById("back") as HTMLInputElement;
 backButton.addEventListener("click", back);
 
 function back(){
-    location.href = "index.html";
+    location.href = "quiz.html";
 }

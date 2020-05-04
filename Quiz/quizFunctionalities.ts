@@ -5,6 +5,7 @@ której starość się nie ima,<br>
 a że zawsze jest pomocna,<br>
 nasza wiedza z niej ma być mocna.<br>
 <img src="glowny.jpg" alt="Einstein przy tablicy(animowane)">`;
+
 const nextQuestionButton = document.getElementById("nextQuestion") as HTMLInputElement;
 nextQuestionButton.addEventListener("click", nextQuestion);
 const previousQuestionButton = document.getElementById("previousQuestion") as HTMLInputElement;
@@ -12,30 +13,32 @@ previousQuestionButton.addEventListener("click", previousQuestion);
 const cancelButton = document.getElementById("cancel") as HTMLInputElement;
 cancelButton.addEventListener("click", cancelQuiz);
 const stopButton = document.getElementById("stop") as HTMLInputElement;
+
 stopButton.addEventListener("click", sendQuiz);
 window.onload = changeContent;
-
-let doneQuizFlag = false;
 
 const saveResultButton = document.getElementById("saveResult") as HTMLInputElement;
 const saveAllButton = document.getElementById("saveAll") as HTMLInputElement;
 saveResultButton.addEventListener("click", saveResult);
 saveAllButton.addEventListener("click", saveStatistics);
 
+let doneQuizFlag = false;
+
 const radioButtons = document.querySelectorAll("input[type=radio]");
 for(let i = 0; i < 4; i++ ){
     radioButtons[i].addEventListener("click", saveAnswer);
 }
 
-let tryNr = localStorage.getItem("number");
-//localStorage.removeItem("number");
-if(tryNr == null)
-    tryNr = "0";
-//let lastTime = 0;
-//let time = 0;
-//let ansCounter = 0;
+if(getID() == null){
+    let tryNr = localStorage.getItem("number");
+    localStorage.removeItem("number");
+    if(tryNr == null)
+        tryNr = "0";
+    sessionStorage.setItem("uniqueID", tryNr);
+    localStorage.setItem("number", (parseInt(tryNr)+1).toString());
+}
 
-//let questionNumber = 0;
+
 if(sessionStorage.getItem("questionNumber") == null)
     sessionStorage.setItem("questionNumber", "0");
 
@@ -47,6 +50,10 @@ if(sessionStorage.getItem("time") == null)
 
 if(sessionStorage.getItem("ansCounter") == null)
     sessionStorage.setItem("ansCounter", "0");
+
+function getID(){
+    return sessionStorage.getItem("uniqueID");
+}
 
 function getSV(name: string){
     return parseInt(sessionStorage.getItem(name));
@@ -69,6 +76,7 @@ function nextQuestion(){
 }
 
 changeContent();
+
 if(getSV("questionNumber") == 0)
     previousQuestionButton.disabled = true;
 if(getSV("ansCounter") != quiz["questions"].length)
@@ -92,23 +100,23 @@ function saveAnswer(){
     for(let i = 0; i < 4; i++){
         const answer = document.getElementById("answer" + (i).toString()) as HTMLInputElement;
         if(answer.checked){
-            let currentAns = sessionStorage.getItem(tryNr + "ans" + getSV("questionNumber").toString());
+            let currentAns = sessionStorage.getItem(getID() + "ans" + getSV("questionNumber").toString());
             if(currentAns == null)
                 changeSV("ansCounter", 1);
             if(getSV("ansCounter") == quizQuestions.length)
                 stopButton.disabled = false;
-            sessionStorage.setItem(tryNr + "ans" + getSV("questionNumber").toString(), answer.value);
+            sessionStorage.setItem(getID() + "ans" + getSV("questionNumber").toString(), answer.value);
         }
     }
 }
 
 function saveTime(){
-    let questionTime = sessionStorage.getItem(tryNr + "time" + getSV("questionNumber").toString());
+    let questionTime = sessionStorage.getItem(getID() + "time" + getSV("questionNumber").toString());
     if(questionTime == null)
         questionTime = "0";
     const newTime = (parseInt(questionTime, 0) + (getSV("time") - getSV("lastTime"))).toString();
     changeSV("lastTime", getSV("time") - getSV("lastTime"));
-    sessionStorage.setItem(tryNr + "time" + getSV("questionNumber").toString(), newTime);
+    sessionStorage.setItem(getID() + "time" + getSV("questionNumber").toString(), newTime);
 }
 
 function changeContent(){
@@ -116,7 +124,7 @@ function changeContent(){
     const penalty = document.getElementById("penalty") as HTMLSpanElement;
     const question = document.getElementById("question") as HTMLElement;
     const quizQuestions = quiz["questions"];
-    const ansi = sessionStorage.getItem(tryNr + "ans" + getSV("questionNumber").toString());
+    const ansi = sessionStorage.getItem(getID() + "ans" + getSV("questionNumber").toString());
     penalty.textContent = quizQuestions[getSV("questionNumber")]["penalty"];
     questionNr.textContent = (getSV("questionNumber") + 1).toString();
     question.textContent = quizQuestions[getSV("questionNumber")].question;
@@ -148,6 +156,7 @@ const timer = document.getElementById("timer") as HTMLSpanElement;
 let id = setInterval(changeTimer, 1000);
 if(getSV("time") != 0)
     changeTimer();
+
 function changeTimer(){
     changeSV("time", 1);
     let timeString = "";
@@ -165,23 +174,21 @@ function changeTimer(){
 
 function cancelQuiz(){
     sessionStorage.clear();
-    location.href = "index.html";
+    location.href = "quiz.html";
 }
 
-let correctAnswers = 0;
-
 function saveResult(){
-    localStorage.setItem(tryNr + "penalty", (points - getSV("time")).toString());
-    localStorage.setItem(tryNr + "result", points.toString());
-    localStorage.setItem("number", (parseInt(tryNr) + 1).toString());
+    localStorage.setItem(getID() + "penalty", (points - getSV("time")).toString());
+    localStorage.setItem(getID() + "result", points.toString());
+    localStorage.setItem(getID().toString() + "done", "true");
     sessionStorage.clear();
-    location.href = "index.html";
+    location.href = "quiz.html";
 }
 
 function saveStatistics(){
     for(let i = 0; i < quiz["questions"].length; i++){
-        let time = sessionStorage.getItem(tryNr + "time" + i.toString());
-        localStorage.setItem(tryNr + "time" + i.toString(), time);
+        let time = sessionStorage.getItem(getID() + "time" + i.toString());
+        localStorage.setItem(getID() + "time" + i.toString(), time);
     }  
     saveResult();
 }
@@ -193,12 +200,10 @@ function sendQuiz(){
     clearInterval(id);
     doneQuizFlag = true;
     for(let i = 0; i < quiz["questions"].length; i++){
-        let ans = sessionStorage.getItem(tryNr + "ans" + i.toString());
-        if(ans ==  quiz["questions"][i]["correctAnswer"])
-            correctAnswers++;
-        else{
+        let ans = sessionStorage.getItem(getID() + "ans" + i.toString());
+        if(ans !=  quiz["questions"][i]["correctAnswer"])
             points += parseInt(quiz["questions"][i]["penalty"]);
-        }
+        
     }
 
     colorRightAnswer(quiz["questions"][getSV("questionNumber")]["correctAnswer"]);
