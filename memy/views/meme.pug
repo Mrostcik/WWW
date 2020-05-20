@@ -1,0 +1,23 @@
+html
+    head
+        title= title
+    style
+        include style.css
+    body
+        h1= message
+        a(href="/")
+            img(src=meme.url)
+        form(action="/meme/" + meme.id, method="post")
+            p Cena:
+                input(type="number", name="price")
+            input(type="submit", value="submit")
+        h1="Price list"
+        - var n = meme.prices.length
+        table
+            tr
+                th Price
+            tr
+            while n > 0
+                tr
+                   td #{meme.prices[--n]}
+                tr

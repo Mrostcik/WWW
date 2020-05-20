@@ -1,0 +1,26 @@
+{
+  "name": "memy",
+  "version": "1.0.0",
+  "description": "",
+  "main": "memix.ts",
+  "scripts": {
+    "test": "npx mocha --exit -r ts-node/register testy.ts",
+    "build": "npx ts-node memixy.ts",
+    "tslint": "tslint memixy.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/mocha": "^7.0.2",
+    "express": "^4.17.1",
+    "pug": "^2.0.4",
+    "typescript": "^3.9.2"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/node": "^14.0.1",
+    "chai": "^4.2.0",
+    "mocha": "^7.1.2",
+    "ts-node": "^8.10.1"
+  }
+}

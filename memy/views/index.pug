@@ -1,0 +1,16 @@
+html
+    head
+        title= title
+    style
+        include style.css
+    body
+        h1= message
+        img(src="https://www.wykop.pl/cdn/c3201142/comment_1589890151EowDEZ1qqYicFaEwhye8IT.jpg")
+        h1="Meme list"
+        ul
+            each meme in memes
+                li
+                    p Name: #{meme.name}
+                    p Price: #{meme.getCurrentPrice()}
+                    a(href="meme/" + meme.id)
+                        img(src=meme.url)
