@@ -78,6 +78,10 @@ app.get("/", function(req, res) {
 
 app.get("/meme/:memeId", function (req, res) {
     const meme = list.getMeme(parseInt(req.params.memeId, 10));
+    if(meme == null){
+        res.send("Wrong meme id");
+        return;
+    }
     res.render("meme", { title: "Meme history", meme });
 })
 
@@ -87,6 +91,10 @@ app.use(express.urlencoded({
 
 app.post("/meme/:memeId", function (req, res) {
     const meme = list.getMeme(parseInt(req.params.memeId, 10));
+    if(meme == null){
+        res.send("Wrong meme id");
+        return;
+    }
     const price = req.body.price;
     meme.changePrice(price);
     res.render("meme", { meme })

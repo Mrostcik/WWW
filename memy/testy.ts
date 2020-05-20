@@ -23,6 +23,7 @@ describe("MemeList", () => {
         expect(memeList.getMeme(2)).to.equal(memix2);
         expect(memeList.getMeme(3)).to.equal(memix3);
         expect(memeList.getMeme(1)).to.equal(memix1);
+        expect(memeList.getMeme(4)).to.equal(null);
     });
 
     it("Most expensive memes are returned correctly", () => {
