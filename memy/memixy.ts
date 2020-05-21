@@ -100,5 +100,9 @@ app.post("/meme/:memeId", function (req, res) {
     res.render("meme", { meme })
 })
 
+app.use(function (req,res,next){
+	res.status(404).send('Unable to find the requested resource!');
+});
+
 // localhost:8080
 app.listen(8080);
