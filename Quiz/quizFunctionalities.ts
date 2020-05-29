@@ -1,3 +1,5 @@
+import {addToDB} from "./db.js";
+
 let left = document.getElementById("intro") as HTMLElement;
 left.innerHTML = `
 Matma to jest ta dziedzina,<br>
@@ -7,64 +9,43 @@ nasza wiedza z niej ma być mocna.<br>
 <img src="glowny.jpg" alt="Einstein przy tablicy(animowane)">`;
 
 const nextQuestionButton = document.getElementById("nextQuestion") as HTMLInputElement;
-nextQuestionButton.addEventListener("click", nextQuestion);
 const previousQuestionButton = document.getElementById("previousQuestion") as HTMLInputElement;
-previousQuestionButton.addEventListener("click", previousQuestion);
 const cancelButton = document.getElementById("cancel") as HTMLInputElement;
-cancelButton.addEventListener("click", cancelQuiz);
 const stopButton = document.getElementById("stop") as HTMLInputElement;
-
-stopButton.addEventListener("click", sendQuiz);
-window.onload = changeContent;
-
 const saveResultButton = document.getElementById("saveResult") as HTMLInputElement;
 const saveAllButton = document.getElementById("saveAll") as HTMLInputElement;
+const radioButtons: NodeListOf<Element> = document.querySelectorAll("input[type=radio]");
+let doneQuizFlag: boolean = false;
+let points: number = 0;
+
+nextQuestionButton.addEventListener("click", nextQuestion);
+previousQuestionButton.addEventListener("click", previousQuestion);
+cancelButton.addEventListener("click", cancelQuiz);
+stopButton.addEventListener("click", sendQuiz);
 saveResultButton.addEventListener("click", saveResult);
 saveAllButton.addEventListener("click", saveStatistics);
-
-let doneQuizFlag = false;
-
-const radioButtons = document.querySelectorAll("input[type=radio]");
 for(let i = 0; i < 4; i++ ){
     radioButtons[i].addEventListener("click", saveAnswer);
 }
 
-if(getID() == null){
-    let tryNr = localStorage.getItem("number");
-    localStorage.removeItem("number");
-    if(tryNr == null)
-        tryNr = "0";
-    sessionStorage.setItem("uniqueID", tryNr);
-    localStorage.setItem("number", (parseInt(tryNr)+1).toString());
-}
+window.onload = changeContent;
+initializePage();
 
+const timer = document.getElementById("timer") as HTMLSpanElement;
+let id: number = setInterval(changeTimer, 1000);
+if(getSV("time") != 0)
+    changeTimer();
 
-if(sessionStorage.getItem("questionNumber") == null)
-    sessionStorage.setItem("questionNumber", "0");
-
-if(sessionStorage.getItem("lastTime") == null)
-    sessionStorage.setItem("lastTime", "0");
-
-if(sessionStorage.getItem("time") == null)
-    sessionStorage.setItem("time", "0");
-
-if(sessionStorage.getItem("ansCounter") == null)
-    sessionStorage.setItem("ansCounter", "0");
-
-function getID(){
-    return sessionStorage.getItem("uniqueID");
-}
-
-function getSV(name: string){
+function getSV(name: string): number{
     return parseInt(sessionStorage.getItem(name));
 }
 
-function changeSV(name: string, add: number){
-    let nr = getSV(name);
+function changeSV(name: string, add: number): void{
+    let nr: number = getSV(name);
     sessionStorage.setItem(name, (nr+add).toString());
 }
 
-function nextQuestion(){
+function nextQuestion(): void{
     saveTime();
     changeSV("questionNumber", 1);
     if(getSV("questionNumber") >= quiz["questions"].length-1){
@@ -75,16 +56,7 @@ function nextQuestion(){
     changeContent();
 }
 
-changeContent();
-
-if(getSV("questionNumber") == 0)
-    previousQuestionButton.disabled = true;
-if(getSV("ansCounter") != quiz["questions"].length)
-    stopButton.disabled = true;
-else
-    nextQuestionButton.disabled = true;
-
-function previousQuestion(){
+function previousQuestion(): void{
     saveTime();
     changeSV("questionNumber", -1);
     if(getSV("questionNumber") < 1){
@@ -95,39 +67,41 @@ function previousQuestion(){
     changeContent();
 }
 
-function saveAnswer(){
-    const quizQuestions = quiz["questions"];
+function saveAnswer(): void {
+    const quizQuestions: Object[] = quiz["questions"];
     for(let i = 0; i < 4; i++){
         const answer = document.getElementById("answer" + (i).toString()) as HTMLInputElement;
         if(answer.checked){
-            let currentAns = sessionStorage.getItem(getID() + "ans" + getSV("questionNumber").toString());
+            let currentAns: string = sessionStorage.getItem("ans" + getSV("questionNumber").toString());
             if(currentAns == null)
                 changeSV("ansCounter", 1);
             if(getSV("ansCounter") == quizQuestions.length)
                 stopButton.disabled = false;
-            sessionStorage.setItem(getID() + "ans" + getSV("questionNumber").toString(), answer.value);
+            sessionStorage.setItem("ans" + getSV("questionNumber").toString(), answer.value);
         }
     }
 }
 
-function saveTime(){
-    let questionTime = sessionStorage.getItem(getID() + "time" + getSV("questionNumber").toString());
+function saveTime(): void {
+    let questionTime: string = sessionStorage.getItem("time" + getSV("questionNumber").toString());
     if(questionTime == null)
         questionTime = "0";
-    const newTime = (parseInt(questionTime, 0) + (getSV("time") - getSV("lastTime"))).toString();
+    const newTime: string = (parseInt(questionTime, 0) + (getSV("time") - getSV("lastTime"))).toString();
     changeSV("lastTime", getSV("time") - getSV("lastTime"));
-    sessionStorage.setItem(getID() + "time" + getSV("questionNumber").toString(), newTime);
+    sessionStorage.setItem("time" + getSV("questionNumber").toString(), newTime);
 }
 
-function changeContent(){
+function changeContent(): void {
     const questionNr = document.getElementById("questionNr") as HTMLSpanElement;
     const penalty = document.getElementById("penalty") as HTMLSpanElement;
     const question = document.getElementById("question") as HTMLElement;
-    const quizQuestions = quiz["questions"];
-    const ansi = sessionStorage.getItem(getID() + "ans" + getSV("questionNumber").toString());
+    const quizQuestions: any = quiz["questions"];
+    const ansi: string = sessionStorage.getItem("ans" + getSV("questionNumber").toString());
+
     penalty.textContent = quizQuestions[getSV("questionNumber")]["penalty"];
     questionNr.textContent = (getSV("questionNumber") + 1).toString();
     question.textContent = quizQuestions[getSV("questionNumber")].question;
+
     for(let i = 0; i < 4; i++){
         const answer = document.getElementById("answer" + (i).toString()) as HTMLInputElement;
         answer.checked = false;
@@ -143,8 +117,8 @@ function changeContent(){
 
 }
 
-function colorRightAnswer(which: string){
-    const all = document.querySelectorAll("label");
+function colorRightAnswer(which: string): void {
+    const all: NodeListOf<HTMLLabelElement> = document.querySelectorAll("label");
     for(let i = 0; i < all.length; i++){
         all[i].style.backgroundColor = "rgb(211, 186, 149)";
         if(i == parseInt(which))
@@ -152,16 +126,11 @@ function colorRightAnswer(which: string){
     }
 }
 
-const timer = document.getElementById("timer") as HTMLSpanElement;
-let id = setInterval(changeTimer, 1000);
-if(getSV("time") != 0)
-    changeTimer();
-
-function changeTimer(){
+function changeTimer(): void {
     changeSV("time", 1);
-    let timeString = "";
-    const minutes = Math.floor(getSV("time")/60);
-    const seconds = getSV("time") % 60;
+    let timeString: string = "";
+    const minutes: number = Math.floor(getSV("time")/60);
+    const seconds: number = getSV("time") % 60;
     if(minutes < 10)
         timeString += "0";
     timeString += minutes.toString() + ":";
@@ -172,38 +141,39 @@ function changeTimer(){
     timer.textContent = timeString;
 }
 
-function cancelQuiz(){
+function cancelQuiz(): void {
     sessionStorage.clear();
     location.href = "quiz.html";
 }
 
-function saveResult(){
-    localStorage.setItem(getID() + "penalty", (points - getSV("time")).toString());
-    localStorage.setItem(getID() + "result", points.toString());
-    localStorage.setItem(getID().toString() + "done", "true");
-    sessionStorage.clear();
-    location.href = "quiz.html";
+function getResult(): number[] {
+    let penalty: number = points - getSV("time");
+    let data: number[] = [points, penalty];
+    return data;
+}
+function saveResult(): void{
+    const data: number[] = getResult();
+    addToDB(data[0], data[1], []);
 }
 
-function saveStatistics(){
+function saveStatistics(): void{
+    let times: number[] = [];
     for(let i = 0; i < quiz["questions"].length; i++){
-        let time = sessionStorage.getItem(getID() + "time" + i.toString());
-        localStorage.setItem(getID() + "time" + i.toString(), time);
+        let time = parseInt(sessionStorage.getItem("time" + i.toString()));
+        times.push(time);
     }  
-    saveResult();
+    let data: number[] = getResult();
+    addToDB(data[0], data[1], times);
 }
 
-let points = 0;
-
-function sendQuiz(){
+function sendQuiz(): void {
     saveTime();
     clearInterval(id);
     doneQuizFlag = true;
     for(let i = 0; i < quiz["questions"].length; i++){
-        let ans = sessionStorage.getItem(getID() + "ans" + i.toString());
+        let ans: string = sessionStorage.getItem("ans" + i.toString());
         if(ans !=  quiz["questions"][i]["correctAnswer"])
             points += parseInt(quiz["questions"][i]["penalty"]);
-        
     }
 
     colorRightAnswer(quiz["questions"][getSV("questionNumber")]["correctAnswer"]);
@@ -217,4 +187,27 @@ function sendQuiz(){
     saveResultButton.style.display = "initial";
     saveAllButton.style.display = "initial";
 
+}
+
+function initializePage(): void{
+    if(sessionStorage.getItem("questionNumber") == null)
+        sessionStorage.setItem("questionNumber", "0");
+
+    if(sessionStorage.getItem("lastTime") == null)
+        sessionStorage.setItem("lastTime", "0");
+
+    if(sessionStorage.getItem("time") == null)
+        sessionStorage.setItem("time", "0");
+
+    if(sessionStorage.getItem("ansCounter") == null)
+        sessionStorage.setItem("ansCounter", "0");
+
+    changeContent();
+
+    if(getSV("questionNumber") == 0)
+        previousQuestionButton.disabled = true;
+    if(getSV("ansCounter") != quiz["questions"].length)
+        stopButton.disabled = true;
+    else
+        nextQuestionButton.disabled = true;
 }

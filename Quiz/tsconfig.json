@@ -3,10 +3,12 @@
         "lib":[
             "ES2016",
             "DOM"
-        ]
+        ],
+        "target": "ES2016"
     },
     "include": [
         "quizJSON.ts",
+        "db.ts",
         "mainButtonFunctionalities.ts",
         "quizFunctionalities.ts",
         "resultsFunctionalities.ts"

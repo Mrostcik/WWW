@@ -1,12 +1,12 @@
 let newQuiz = document.getElementById("newQuiz") as HTMLInputElement;
-newQuiz.onclick = startQuiz;
 let results = document.getElementById("checkResults") as HTMLInputElement;
+newQuiz.onclick = startQuiz;
 results.onclick = seeResults;
 
-function startQuiz(){
+function startQuiz(): void {
     location.href = "question.html";
 };
 
-function seeResults(){
+function seeResults(): void {
     location.href = "results.html"
 }

@@ -1,4 +1,4 @@
-const quiz = JSON.parse(`{
+const quiz: Object = JSON.parse(`{
     "info": {
         "difficulty": "Easy",
         "description": "Simple algebraic quiz"

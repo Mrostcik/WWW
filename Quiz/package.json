@@ -5,7 +5,7 @@
   "main": "mainButtonFunctionalities.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "compile": "tsc --target es2016 quizJSON.ts mainButtonFunctionalities.ts quizFunctionalities.ts resultsFunctionalities.ts"
+    "compile": "tsc --target es2016 quizJSON.ts db.ts mainButtonFunctionalities.ts quizFunctionalities.ts resultsFunctionalities.ts"
   },
   "author": "",
   "license": "ISC"
