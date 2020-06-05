@@ -1,64 +1,7 @@
+import {Meme, MemeList} from "./klasy"
 import express = require("express")
 const app = express()
 app.set("view engine", "pug");
-
-export class Meme {
-    private id: number;
-    private name: string;
-    private prices: number[];
-    private url: string;
-    constructor(id: number, name: string, price: number, url: string){
-        this.id = id;
-        this.name = name;
-        this.prices = new Array();
-        this.prices.push(price);
-        this.url = url;
-    }
-
-    changePrice(newPrice: number){
-        this.prices.push(newPrice);
-    }
-
-    getCurrentPrice(){
-        const i = this.prices.length - 1;
-        return this.prices[i];
-    }
-
-    getId(){
-        return this.id;
-    }
-
-}
-
-export class MemeList{
-    private memes: Meme[];
-
-    constructor(){
-        this.memes = new Array();
-    }
-
-    addMeme(m: Meme){
-        this.memes.push(m);
-    }
-
-    getMeme(id: number){
-        let meme = null;
-        for(const m of this.memes){
-            if(m.getId() === id)
-                meme = m;
-        }
-        return meme;
-    }
-
-    getMostExpensive(howMany: number){
-        if(howMany > this.memes.length)
-            return null;
-        const sorted = this.memes.sort(function(a: Meme, b: Meme){
-            return b.getCurrentPrice() - a.getCurrentPrice()
-        });
-        return sorted.slice(0, howMany);
-    }
-}
 
 const list = new MemeList();
 list.addMeme(new Meme(1, "Najwyższy człowiek świata", 100, "https://www.wykop.pl/cdn/c3201142/comment_1589890151EowDEZ1qqYicFaEwhye8IT.jpg"));
@@ -95,8 +38,17 @@ app.post("/meme/:memeId", function (req, res) {
         res.send("Wrong meme id");
         return;
     }
+
     const price = req.body.price;
-    meme.changePrice(price);
+    if(isNaN(price)){
+        res.send("Given price is not a number");
+        return;
+    }
+    if(meme.changePrice(price)){
+        res.send("Given price is negative");
+        return;
+    };
+    
     res.render("meme", { meme })
 })
 
@@ -104,5 +56,6 @@ app.use(function (req,res,next){
 	res.status(404).send('Unable to find the requested resource!');
 });
 
-// localhost:8080
-app.listen(8080);
+const server = app.listen(8080, () => {
+    console.log("App is running at http://localhost:8080/");
+});

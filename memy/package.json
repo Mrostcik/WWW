@@ -6,7 +6,7 @@
   "scripts": {
     "test": "npx mocha --exit -r ts-node/register testy.ts",
     "build": "npx ts-node memixy.ts",
-    "tslint": "tslint memixy.ts"
+    "tslint": "tslint memixy.ts klasy.ts"
   },
   "author": "",
   "license": "ISC",

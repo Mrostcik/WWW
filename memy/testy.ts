@@ -1,6 +1,7 @@
-import { Meme, MemeList } from "./memixy";
+import { Meme, MemeList } from "./klasy";
 import { expect } from "chai";
 import "mocha";
+import { constants } from "buffer";
 
 describe("Meme", () => {
     it("current price changes after changePrice()", () => {
@@ -8,6 +9,20 @@ describe("Meme", () => {
         expect(memix.getCurrentPrice()).to.equal(5);
         memix.changePrice(100);
         expect(memix.getCurrentPrice()).to.equal(100);
+    });
+
+    it("current price doesn't change to negative one", () => {
+        const memix = new Meme(1, "x", 5, "rrr");
+        expect(memix.changePrice(-5)).to.equal(1);
+    })
+
+    it("historical prices are kept right", () => {
+        const prices = [2,3,4];
+        const memix = new Meme(1, "x", 2, "rrr");
+        memix.changePrice(3);
+        memix.changePrice(4);
+        const history = memix.getPrices();
+        expect(prices).to.eql(history);
     });
 });
 
@@ -39,4 +54,9 @@ describe("MemeList", () => {
         expect(memeList.getMostExpensive(2)).to.eql(top2);
         expect(memeList.getMostExpensive(3)).to.eql(top3);
     });
+
+    it("getting more memes than there is in list returns null", () => {
+        const memeList = new MemeList();
+        expect(memeList.getMostExpensive(1)).to.equal(null)
+    })
 });
