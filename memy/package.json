@@ -4,16 +4,26 @@
   "description": "",
   "main": "memix.ts",
   "scripts": {
-    "test": "npx mocha --exit -r ts-node/register testy.ts",
     "build": "npx ts-node memixy.ts",
     "tslint": "tslint memixy.ts klasy.ts"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@types/cookie-parser": "^1.4.2",
+    "@types/crypto-js": "^3.1.47",
+    "@types/csurf": "^1.9.36",
+    "@types/express-session": "^1.17.0",
     "@types/mocha": "^7.0.2",
+    "@types/sqlite3": "^3.1.6",
+    "connect-sqlite3": "^0.9.11",
+    "cookie-parser": "^1.4.5",
+    "crypto-js": "^4.0.0",
+    "csurf": "^1.11.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.1",
     "pug": "^2.0.4",
+    "sqlite3": "^4.2.0",
     "typescript": "^3.9.2"
   },
   "devDependencies": {

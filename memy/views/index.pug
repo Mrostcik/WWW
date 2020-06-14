@@ -5,12 +5,16 @@ html
             include style.css
     body
         h1= message
+        form(action="/login", method="get")
+            input(type="submit", value="zaloguj się")
+        form(action="/logout", method="post")
+            input(type="submit", value="wyloguj się")
         img(src="https://www.wykop.pl/cdn/c3201142/comment_1589890151EowDEZ1qqYicFaEwhye8IT.jpg")
         h1="Meme list"
         ul
             each meme in memes
                 li
                     p Name: #{meme.name}
-                    p Price: #{meme.getCurrentPrice()}
+                    p Price: #{meme.price}
                     a(href="meme/" + meme.id)
                         img(src=meme.url)

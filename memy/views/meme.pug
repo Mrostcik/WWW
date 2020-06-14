@@ -8,16 +8,18 @@ html
         a(href="/")
             img(src=meme.url)
         form(action="/meme/" + meme.id, method="post")
+            input(type="hidden" name="_csrf" value=csrfToken)
             p Cena:
                 input(type="number", name="price")
             input(type="submit", value="submit")
         h1="Price list"
-        - var n = meme.prices.length
+        - var n = prices.length
         table
             tr
                 th Price
             tr
             while n > 0
                 tr
-                   td #{meme.prices[--n]}
+                   td #{prices[--n]}
+                   td #{authors[n]}
                 tr
