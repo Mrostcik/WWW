@@ -6,6 +6,7 @@ html
     body
         p Logowanie
         form(action="/login", method="post")
+            input(type="hidden" name="_csrf" value=csrfToken)
             input(type="text" name="login")
             br
             input(type="password" name="password")

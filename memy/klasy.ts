@@ -1,4 +1,4 @@
-import * as sqlite from 'sqlite3';
+import * as sqlite from "sqlite3";
 
 export class Meme {
     public id: number;
@@ -14,12 +14,12 @@ export class Meme {
         this.author = author;
     }
 
-    static getPrices(db: sqlite.Database, ID: number){
+    static getPrices(db: sqlite.Database, ID: number): Promise<[number[], string[]]>{
         return new Promise((resolve, reject) => {
-            db.all(`SELECT price, author FROM prices WHERE meme_id=${ID}`,
+            db.all(`SELECT price, author FROM prices WHERE meme_id=?`, [ID],
             function(err, rows){
                 if(err){
-                    return reject();
+                    return Meme.getPrices(db, ID);
                 }
                 const prices: number[] = [];
                 const authors: string[] = [];
@@ -32,61 +32,69 @@ export class Meme {
         });
     }
 
-    static async changePrice(db: sqlite.Database, ID: number, newPrice: number, newAuthor: string){
+    static async changePrice(ID: number, newPrice: number, newAuthor: string): Promise<[number[], string[]]>{
+        const db = new sqlite.Database("memy.db");
         return new Promise((resolve, reject) => {
             db.serialize(async function(){
-                const oldPrice = await Meme.getCurrentPrice(db, ID) as number;
-                const oldAuthor = await Meme.getCurrentAuthor(db, ID) as string;
-                if(newPrice < 0)
-                    return resolve(null);
-                db.run("BEGIN");
-                db.run(`UPDATE memes SET price=${newPrice}, author="${newAuthor}" WHERE id=${ID}`,
-                function(err){
-                    if(err){
-                        db.run("ROLLBACK");
-                        return reject();
-                    }
-                });
-                db.run(`INSERT INTO prices (price, meme_id, author)
-                        VALUES (${oldPrice}, ${ID}, "${oldAuthor}")`,
-                async function(err){
-                    if(err){
-                        db.run("ROLLBACK");
-                        return reject();
-                    }
-                    else{
-                        const data = await Meme.getPrices(db, ID) as [number[], string[]];
-                        resolve(data);
-                        db.run("COMMIT");
-                    }
+                const oldPrice = await Meme.getCurrentPrice(ID) as number;
+                const oldAuthor = await Meme.getCurrentAuthor(ID) as string;
+                db.run("BEGIN", function(err){
+                    if(err)
+                        return Meme.changePrice(ID, newPrice, newAuthor);
+                    db.run(`UPDATE memes SET price=?, author=? WHERE id=?`,
+                            [newPrice, newAuthor, ID], function(err2){
+                        if(err2){
+                            db.run("ROLLBACK");
+                            return Meme.changePrice(ID, newPrice, newAuthor);
+                        }
+                        db.run(`INSERT INTO prices (price, meme_id, author)
+                                VALUES (?, ?, ?)`,
+                                [oldPrice, ID, oldAuthor],
+                            async function(err3){
+                                if(err3){
+                                    db.run("ROLLBACK");
+                                    return Meme.changePrice(ID, newPrice, newAuthor);
+                                }
+                                else{
+                                    const data = await Meme.getPrices(db, ID) as [number[], string[]];
+                                    resolve(data);
+                                    db.run("COMMIT");
+                                    db.close();
+                                }
+                        });
+                    });
                 });
             });
         });
     }
 
-    static getCurrentPrice(db: sqlite.Database, ID: number){
+    static getCurrentPrice(ID: number): Promise<number>{
+        const db = new sqlite.Database("memy.db");
         return new Promise((resolve,reject) => {
-            db.get(`SELECT price FROM memes where id=${ID}`,
+            db.get(`SELECT price FROM memes where id=?`, [ID],
             function(err, row){
                 if(err){
-                    reject();
+                    return Meme.getCurrentPrice(ID);
                 }
                 else{
                     resolve(row.price);
+                    db.close();
                 }
             });
         });
     }
 
-    static getCurrentAuthor(db: sqlite.Database, ID: number){
+    static getCurrentAuthor(ID: number): Promise<string>{
+        const db = new sqlite.Database("memy.db");
         return new Promise((resolve,reject) => {
-            db.get(`SELECT author FROM memes where id=${ID}`,
+            db.get(`SELECT author FROM memes where id=?`, [ID],
             function(err, row){
                 if(err){
-                    reject();
+                    return Meme.getCurrentAuthor(ID);
                 }
                 else{
                     resolve(row.author);
+                    db.close();
                 }
             });
         });
@@ -98,14 +106,17 @@ export class Meme {
         const url = this.url;
         const price = this.price;
         const author = this.author;
+        const meme = this;
         return new Promise((resolve, reject) => {
             db.run(`INSERT INTO memes (id, name, price, url, author)
-                    VALUES (${id}, "${name}", ${price}, "${url}", "${author}")`, function (err) {
+                    VALUES (?, ?, ?, ?, ?)`,
+                    [id, name, price, url, author], function (err) {
                 if (err) {
-                    reject();
+                    return meme.saveToDB(db);
                 }
                 else{
                     resolve();
+                    db.close();
                 }
             });
         });
@@ -114,33 +125,37 @@ export class Meme {
 }
 
 export class MemeList{
-    static addMeme(db: sqlite.Database, m: Meme){
+    static addMeme(m: Meme){
+        const db = new sqlite.Database("memy.db");
         return m.saveToDB(db);
     }
 
-    static getMeme(db: sqlite.Database, id: number){
+    static getMeme(id: number): Promise<Meme>{
+        const db = new sqlite.Database("memy.db");
         return new Promise((resolve, reject) => {
-            db.get(`SELECT * FROM memes WHERE id=${id}`,
+            db.get(`SELECT * FROM memes WHERE id=?`, [id],
             function(err, row){
                 if(err){
-                    reject();
+                    return MemeList.getMeme(id);
                 }
                 else{
                     if(!row)
                         resolve(null);
 
                     resolve(new Meme(row.id, row.name, row.price, row.url, row.author));
+                    db.close();
                 }
             });
         });
     }
 
-    static getMostExpensive(db: sqlite.Database, howMany: number){
+    static getMostExpensive(howMany: number): Promise<Meme[]>{
+        const db = new sqlite.Database("memy.db");
         return new Promise((resolve, reject) => {
-            db.all(`SELECT * FROM memes ORDER BY price DESC LIMIT ${howMany}`,
+            db.all(`SELECT * FROM memes ORDER BY price DESC LIMIT ?`, [howMany],
              function(err, rows){
                 if(err){
-                    reject();
+                    return MemeList.getMostExpensive(howMany);
                 }
                 else{
                     const memes: Meme[] = [];
@@ -148,6 +163,7 @@ export class MemeList{
                         memes.push(new Meme(row.id, row.name, row.price, row.url, row.author))
                     }
                     resolve(memes);
+                    db.close();
                 }
             });
         });
