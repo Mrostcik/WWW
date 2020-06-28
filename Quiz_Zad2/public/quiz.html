@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Świat quizów</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" type="text/css" media="screen" href="/css/main.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Witaj w świecie quizów!</h1>
+    </header>
+    <section id="introduction">
+        Matma to jest ta dziedzina,<br>
+        której starość się nie ima,<br>
+        a że zawsze jest pomocna,<br>
+        nasza wiedza z niej ma być mocna.<br>
+        <img src="/jpg/glowny.jpg" alt="Einstein przy tablicy(animowane)">
+    </section>
+    <select name="quizzes" id="quizzes">
+      <option value="-1">Wybierz quiz</option>
+    </select>
+    <nav id="navigateMain">
+        <input id="newQuiz" type="submit" value="Zacznij nowy quiz!">
+        <input id="checkResults" type="submit" value="Zobacz najlepsze wyniki">
+    </nav>
+    <nav id="loginMenu">
+      <form action="/login" method="GET">
+        <input id="logIn" type="submit" value="Zaloguj się">
+      </form>
+      <form action="/logout" method="POST">
+        <input id="logOut" type="submit" value="Wyloguj się">
+      </form>
+      <form action="/changepassword" method="GET">
+        <input id="passw" type="submit" value="Zmień hasło">
+      </form>
+    </nav>
+    <script src="/js/mainButtonFunctionalities.js"></script>
+  </body>
+</html>

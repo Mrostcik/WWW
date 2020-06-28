@@ -1,0 +1,38 @@
+{
+  "name": "quiz",
+  "version": "1.0.0",
+  "main": "mainButtonFunctionalities.js",
+  "scripts": {
+    "test": "npx mocha -r ts-node/register test.ts",
+    "build": "cd public/js;tsc;cd -;npx ts-node app.ts",
+    "createdb": "npx ts-node createDB.ts"
+  },
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@types/chai": "^4.2.11",
+    "@types/cookie-parser": "^1.4.2",
+    "@types/crypto-js": "^3.1.47",
+    "@types/csurf": "^1.9.36",
+    "@types/express": "^4.17.6",
+    "@types/express-session": "^1.17.0",
+    "@types/mocha": "^7.0.2",
+    "@types/selenium-webdriver": "^4.0.9",
+    "@types/sqlite3": "^3.1.6",
+    "chai": "^4.2.0",
+    "connect-sqlite3": "^0.9.11",
+    "cookie-parser": "^1.4.5",
+    "crypto-js": "^4.0.0",
+    "csurf": "^1.11.0",
+    "express": "^4.17.1",
+    "express-session": "^1.17.1",
+    "mocha": "^8.0.1",
+    "mocha-webdriver": "^0.2.8",
+    "selenium": "^2.20.0",
+    "selenium-webdriver": "^4.0.0-alpha.7",
+    "sqlite3": "^4.2.0",
+    "ts-node": "^8.10.2",
+    "typescript": "^3.9.5"
+  }
+}

@@ -1,0 +1,11 @@
+body{
+    background-color:rgb(34, 157, 214);
+}
+
+input[type=submit]{
+    width: 180px;
+    height: 30px;
+    background-color:purple;
+    color: white;
+    margin-right:5px;
+}
