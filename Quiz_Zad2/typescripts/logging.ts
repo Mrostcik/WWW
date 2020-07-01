@@ -14,6 +14,9 @@ function addUser(login: string, password: string){
             if(err && err.code == "SQLITE_BUSY"){
                 return addUser(login, password);
             }
+            else if(err){
+                return reject();
+            }
             resolve();
             db.close();
         });
@@ -34,6 +37,9 @@ export function checkUser(login: string, password: string){
             if(err && err.code == "SQLITE_BUSY"){
                 return checkUser(login, password);
             }
+            else if(err){
+                return reject();
+            }
             if(!row || row.password !== passwordHashed){
                 db.close();
                 return resolve(false);
@@ -53,6 +59,9 @@ export function changePassword(login: string, password: string){
         db.run(`UPDATE users SET password=? WHERE login=?`, [passwordHashed, login], function(err: any){
             if(err && err.code == "SQLITE_BUSY"){
                 return changePassword(login, password);
+            }
+            else if(err){
+                return reject();
             }
             let pattern = '%"login":"' + login + '"%';
             db.close();

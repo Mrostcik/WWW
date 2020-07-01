@@ -1,5 +1,5 @@
-import {checkUser, changePassword} from "./public/js/logging"
-import {getQuiz, getAllQuizzes, addTime, getTime, addStats, getStats, checkUserSolution, getTop, getAverage} from "./public/js/database"
+import {checkUser, changePassword} from "./typescripts/logging"
+import {getQuiz, getAllQuizzes, addTime, getTime, addStats, getStats, checkUserSolution, getTop, getAverage} from "./typescripts/database"
 import express from 'express';
 import cookieParser from 'cookie-parser';
 import csurf from 'csurf';
@@ -40,7 +40,7 @@ app.get("/token", csrfProtection, function(req, res){
 
 app.get("/login", function(req, res){
     if(req.session.login){
-        res.send("You are already logged in");
+        res.render("error", {title: "There was an error", message: "You are already logged in" });
         return;
     }
     
@@ -55,7 +55,7 @@ app.post("/login", csrfProtection, async function(req, res){
     const login = req.body.login;
     const password = req.body.password;
     if(!(await checkUser(login, password))){
-        res.send("User doesn't exist");
+        res.render("error", {title: "There was an error", message: "User doesn't exist" });
         return;
     }
 
@@ -68,7 +68,7 @@ app.post("/changepassword", csrfProtection, async function(req, res){
     const oldPassword = req.body.password;
     const newPassword = req.body.newPassword;
     if(!(await checkUser(login, oldPassword))){
-        res.send("User doesn't exist");
+        res.render("error", {title: "There was an error", message: "User doesn't exist" });
         return;
     }
 
@@ -83,12 +83,25 @@ app.get("/quizzes", async function(req, res){
 
 app.get("/quiz/:quizId", async function(req, res) {
     if(!req.session.login){
-        res.send("Log in to solve a quiz");
+        res.render("error", {title: "There was an error", message: "Log in to solve a quiz" });
         return;
     }
 
     if(await checkUserSolution(req.session.login, parseInt(req.params.quizId, 10) + 1)){
-        res.send("You already solved this quiz");
+        res.render("error", {title: "There was an error", message: "You already solved this quiz" });
+        return;
+    }
+    res.sendFile("public/question.html", {root: __dirname});
+})
+
+app.post("/quiz/:quizId/begin", csrfProtection, async function(req, res) {
+    if(!req.session.login){
+        res.render("error", {title: "There was an error", message: "Log in to solve a quiz" });
+        return;
+    }
+
+    if(await checkUserSolution(req.session.login, parseInt(req.params.quizId, 10) + 1)){
+        res.render("error", {title: "There was an error", message: "You already solved this quiz" });
         return;
     }
     const id = parseInt(req.params.quizId, 10);
@@ -98,7 +111,7 @@ app.get("/quiz/:quizId", async function(req, res) {
 
 app.get("/quiz/:quizId/content", async function(req, res){
     if(!req.session.login){
-        res.send("You are logged out");
+        res.render("error", {title: "There was an error", message: "You are logged out" });
         return;
     }
     const id = parseInt(req.params.quizId, 10);
@@ -108,9 +121,9 @@ app.get("/quiz/:quizId/content", async function(req, res){
     res.json({quiz, login, id});
 })
 
-app.post("/quiz/:quizId", async function(req, res){
+app.post("/quiz/:quizId", csrfProtection, async function(req, res){
     if(!req.session.login){
-        res.send("Couldn't send results. Log in.");
+        res.render("error", {title: "There was an error", message: "Couldn't send results. Log in" });
         return;
     }
 
@@ -118,6 +131,30 @@ app.post("/quiz/:quizId", async function(req, res){
     let time = -(await getTime(req.session.login, id + 1));
     time += Date.now();
     const data = req.body;
+    if(data == null || data.points == null || data.penalty == null || data.answers == null || data.times == null){
+        res.render("error", {title: "There was an error", message: "No needed data was sent" });
+        return;
+    }
+    if(isNaN(data.points) || isNaN(data.penalty)){
+        res.render("error", {title: "There was an error", message: "Points or penalty argument is not a number" });
+        return;
+    }
+    if(!(data.answers instanceof Array) || !(data.times instanceof Array)){
+        res.render("error", {title: "There was an error", message: "Answers or types argument is not an array" });
+        return;
+    }
+    for(let i = 0; i < data.answers.length; i++){
+        if(isNaN(data.answers[i])){
+            res.render("error", {title: "There was an error", message: "Answers is not a number array" });
+            return;
+        }
+    }
+    for(let i = 0; i < data.times.length; i++){
+        if(isNaN(data.times[i])){
+            res.render("error", {title: "There was an error", message: "Times is not a number array" });
+            return;
+        }
+    }
     const points: number = data.points;
     const penalty: number = data.penalty;
     const answers: number[] = data.answers;
@@ -127,17 +164,21 @@ app.post("/quiz/:quizId", async function(req, res){
         times[i] /= (points-penalty);
         times[i] /= 1000;
     }
+    if(await getStats(req.session.login, id + 1)){
+        res.render("error", {title: "There was an error", message: "This quiz was already solved" });
+        return;
+    }
     await addStats(req.session.login, id + 1, time/1000, JSON.stringify({points: time/1000 + penalty, penalty: penalty, times: times, answers: answers}));
 })
 
-app.post("/logout", function(req, res){
+app.post("/logout", csrfProtection, function(req, res){
     delete req.session.login;
     res.redirect("/");
 })
 
 app.get("/quiz/:quizId/results", function(req, res){
     if(!req.session.login){
-        res.send("Log in to see results");
+        res.render("error", {title: "There was an error", message: "Log in to see results" });
         return;
     }
     res.sendFile("public/results.html", {root: __dirname});
@@ -145,7 +186,7 @@ app.get("/quiz/:quizId/results", function(req, res){
 
 app.get("/quiz/:quizId/results/stats", async function(req, res){
     if(!req.session.login){
-        res.send("You are logged out");
+        res.render("error", {title: "There was an error", message: "You are logged out" });
         return;
     }
     const id = parseInt(req.params.quizId, 10);
@@ -157,7 +198,7 @@ app.get("/quiz/:quizId/results/stats", async function(req, res){
     const avgs: number[] = [];
     const qNr: number = JSON.parse(quiz).questions.length;
     if(!stats){
-        res.send("You haven't solved this quiz yet");
+        res.render("error", {title: "There was an error", message: "You haven't solved this quiz yet" });
         return;
     }    
     for(let i = 0; i < qNr; i++){

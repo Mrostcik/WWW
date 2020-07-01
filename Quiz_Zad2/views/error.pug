@@ -1,0 +1,9 @@
+html
+    head
+        title= title
+    style
+        include error.css
+    body
+        p= message
+        form(action="/", method="get")
+            input(type="submit", value="Wróć na stronę główną")

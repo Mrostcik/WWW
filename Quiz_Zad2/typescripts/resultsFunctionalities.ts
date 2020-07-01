@@ -1,5 +1,4 @@
 const table = document.getElementById("topTable") as HTMLTableElement;
-// getFromDB(table);
 
  const backButton = document.getElementById("back") as HTMLInputElement;
 backButton.addEventListener("click", back);
@@ -15,17 +14,14 @@ let averages: number[] = null;
 fetch(window.location.href + "/stats")
     .then(response => response.json())
     .then(data => {
-        console.log(data);
         quizz = JSON.parse(data.quiz);
         stats = JSON.parse(data.stats);
         topka = data.top;
         averages = data.avgs;
     })
     .then( () => {
-        console.log(averages);
         for(let i = 0; i < topka[1].length; i++){
             const login = topka[0][i];
-            console.log(topka[1][i]);
             const act = JSON.parse(topka[1][i]);
             let row = table.insertRow(i+1);
             let cell1 = row.insertCell(0);

@@ -4,7 +4,7 @@
   "main": "mainButtonFunctionalities.js",
   "scripts": {
     "test": "(npm run createdb ;npm --silent run build&) && (npx mocha -r ts-node/register test.ts; fuser -k 8080/tcp; rm sessions; rm quizy.db)",
-    "build": "cd public/js;tsc;cd -;npx ts-node app.ts",
+    "build": "tsc && npx ts-node app.ts",
     "createdb": "npx ts-node createDB.ts"
   },
   "author": "",
@@ -29,6 +29,7 @@
     "express-session": "^1.17.1",
     "mocha": "^8.0.1",
     "mocha-webdriver": "^0.2.8",
+    "pug": "^3.0.0",
     "selenium": "^2.20.0",
     "selenium-webdriver": "^4.0.0-alpha.7",
     "sqlite3": "^4.2.0",

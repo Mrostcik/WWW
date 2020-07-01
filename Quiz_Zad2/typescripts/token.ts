@@ -1,5 +1,5 @@
 let token: string = null;
-fetch("token")
+fetch("/token")
     .then(response => response.json())
     .then(data => {
         token = data.token;

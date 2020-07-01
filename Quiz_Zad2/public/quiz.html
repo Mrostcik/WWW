@@ -30,6 +30,7 @@
         <input id="logIn" type="submit" value="Zaloguj się">
       </form>
       <form action="/logout" method="POST">
+        <input type="hidden" name="_csrf" id="tok">
         <input id="logOut" type="submit" value="Wyloguj się">
       </form>
       <form action="/changepassword" method="GET">
@@ -37,5 +38,6 @@
       </form>
     </nav>
     <script src="/js/mainButtonFunctionalities.js"></script>
+    <script src="/js/token.js"></script>
   </body>
 </html>

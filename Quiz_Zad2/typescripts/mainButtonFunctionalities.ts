@@ -21,7 +21,6 @@ async function showQuizzes(): Promise<void>{
         .then(response => response.json())
         .then(data => quizzes = data.quizzes);
 
-    console.log(quizzes);
     let index = 0;
     for(const quiz of quizzes){
         const opt = document.createElement('option');

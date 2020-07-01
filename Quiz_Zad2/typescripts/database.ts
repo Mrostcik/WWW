@@ -47,6 +47,9 @@ export function addTime(login: string, quiz_id: number, time: number): Promise<v
                     if(err && err.code == "SQLITE_BUSY"){
                         return addTime(login, quiz_id, time);
                     }
+                    else if(err){
+                        return reject();
+                    }
                     resolve();
                     db.close();
                 });
@@ -60,6 +63,9 @@ export function getTime(login: string, quiz_id: number): Promise<number>{
                 ORDER BY time DESC LIMIT 1`, [login, quiz_id], function(err: any, row){
                     if(err && err.code == "SQLITE_BUSY"){
                         return getTime(login, quiz_id);
+                    }
+                    else if(err){
+                        return reject();
                     }
                     resolve(row.time);
                     db.close();
@@ -75,6 +81,9 @@ function addQuiz(content: string): Promise<void>{
                     if(err && err.code == "SQLITE_BUSY"){
                         return addQuiz(content);
                     }
+                    else if(err){
+                        return reject();
+                    }
                     resolve();
                     db.close();
                 });
@@ -88,6 +97,9 @@ export function getQuiz(id: number): Promise<string>{
                 WHERE id=?`, [id], function(err: any, row){
             if(err && err.code == "SQLITE_BUSY"){
                 return getQuiz(id);
+            }
+            else if(err){
+                return reject();
             }
             if(!row){
                 db.close();
@@ -106,6 +118,9 @@ export function getAllQuizzes(): Promise<string[]>{
         db.all(`SELECT content from quizes`,function(err: any, rows){
             if(err && err.code == "SQLITE_BUSY"){
                 return getAllQuizzes();
+            }
+            else if(err){
+                return reject();
             }
             if(!rows){
                 db.close();
@@ -131,6 +146,9 @@ export function addStats(login: string, id: number, points: number, content: str
                     if(err && err.code == "SQLITE_BUSY"){
                         return addStats(login, id, points, content);
                     }
+                    else if(err){
+                        return reject();
+                    }
                     resolve();
                     db.close();
                 });
@@ -144,6 +162,9 @@ export function getStats(login: string, id: number): Promise<string>{
                  [login, id], function(err: any, row){
                     if(err && err.code == "SQLITE_BUSY"){
                         return getStats(login, id);
+                    }
+                    else if(err){
+                        return reject();
                     }
                     if(!row){
                         db.close();
@@ -164,6 +185,9 @@ export function checkUserSolution(login: string, id: number): Promise<boolean>{
                     if(err && err.code == "SQLITE_BUSY"){
                         return checkUserSolution(login, id);
                     }
+                    else if(err){
+                        return reject();
+                    }
                     if(!row){
                         db.close();
                         return resolve(false);
@@ -183,6 +207,9 @@ export function getTop(id: number): Promise<[string[], string[]]>{
                  [id], function(err: any, rows){
                     if(err && err.code == "SQLITE_BUSY"){
                         return getTop(id);
+                    }
+                    else if(err){
+                        return reject();
                     }
                     if(!rows){
                         db.close();
@@ -208,6 +235,9 @@ export function getAverage(id: number): Promise<string[]>{
                  [id], function(err: any, rows){
                     if(err && err.code == "SQLITE_BUSY"){
                         return getAverage(id);
+                    }
+                    else if(err){
+                        return reject();
                     }
                     if(!rows){
                         db.close();
