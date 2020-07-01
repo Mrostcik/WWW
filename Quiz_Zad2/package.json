@@ -4,7 +4,7 @@
   "main": "mainButtonFunctionalities.js",
   "scripts": {
     "test": "(npm run createdb ;npm --silent run build&) && (npx mocha -r ts-node/register test.ts; fuser -k 8080/tcp; rm sessions; rm quizy.db)",
-    "build": "tsc && npx ts-node app.ts",
+    "build": "cd public; mkdir js; cd -;tsc && npx ts-node app.ts",
     "createdb": "npx ts-node createDB.ts"
   },
   "author": "",
